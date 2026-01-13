@@ -318,6 +318,7 @@
             grid-template-columns: repeat(12, 1fr);
             gap: clamp(15px, 3vw, 35px);
             margin-bottom: 40px;
+            align-items: start;
         }
 
         .gallery-item {
@@ -326,17 +327,35 @@
             border-radius: 15px;
             transition: var(--transition);
             box-shadow: 0 10px 30px rgba(142, 93, 93, 0.1);
+            background: white; 
         }
 
-        .item-small { grid-column: span 6; aspect-ratio: 4/5; }
-        .item-large { grid-column: span 12; aspect-ratio: 16/9; }
+        .item-small { grid-column: span 6; }
+        .item-large { grid-column: span 12; }
 
         @media (min-width: 768px) {
             .item-small { grid-column: span 4; }
             .item-large { grid-column: span 8; }
         }
 
-        .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: 2s cubic-bezier(0.16, 1, 0.3, 1); }
+        .gallery-item img { 
+            width: 100%; 
+            height: auto;
+            display: block;
+            object-fit: contain;
+            transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s ease; 
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px rgba(142, 93, 93, 0.2);
+            z-index: 10;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.06);
+            filter: brightness(1.08) contrast(1.02);
+        }
 
         /* --- FOOTER --- */
         footer {
@@ -389,7 +408,7 @@
         <nav class="sans">
             <a href="#about">Acerca de mí</a>
             <a href="#gallery">Galería</a>
-            <a href="https://xat.com/Vip" target="_blank" class="cta-header">Encuéntrame</a>
+            <a href="https://xat.com/Eliza" target="_blank" class="cta-header">Encuéntrame</a>
         </nav>
     </header>
 
@@ -425,8 +444,8 @@
             </div>
             <div class="info-controls">
                 <div class="track-meta">
-                    <div class="sans track-meta-text" id="trackArtist">En reproducción</div>
-                    <div class="track-title" id="trackName">Rêverie Nocturne</div>
+                    <div class="sans track-meta-text" id="trackArtist">Lady Gaga Ft. Bradley Cooper</div>
+                    <div class="track-title" id="trackName">Shallow</div>
                 </div>
                 <div class="controls-group">
                     <div class="playback-controls">
@@ -478,13 +497,13 @@
             <div class="gallery-item item-large reveal">
                 <img src="img1.jpg" alt="Imagen 1">
             </div>
-            <div class="gallery-item item-small reveal" style="margin-top: 50px;">
+            <div class="gallery-item item-small reveal" style="margin-top: 30px;">
                 <img src="img2.jpg" alt="Imagen 2">
             </div>
             <div class="gallery-item item-small reveal">
                 <img src="img3.jpg" alt="Imagen 3">
             </div>
-            <div class="gallery-item item-large reveal" style="margin-top: -50px;">
+            <div class="gallery-item item-large reveal">
                 <img src="img4.jpg" alt="Imagen 4">
             </div>
         </div>
@@ -510,11 +529,12 @@
 
     <script>
         // CONFIGURACIÓN PLAYLIST
+        // He actualizado los nombres de los tracks y artistas según tu petición.
         const playlist = [
-            { name: "Rêverie Nocturne", artist: "En reproducción", file: "track1.mp3" },
-            { name: "Ethereal Echoes", artist: "Melodía Suave", file: "track2.mp3" },
-            { name: "Pastel Dreams", artist: "Piano Solista", file: "track3.mp3" },
-            { name: "Golden Hour", artist: "Atmósfera Relajante", file: "track4.mp3" }
+            { name: "Shallow", artist: "Lady Gaga Ft. Bradley Cooper", file: "track1.mp3" },
+            { name: "Flowers", artist: "Miley Cyrus", file: "track2.mp3" },
+            { name: "Nos Quedó El Recuerdo", artist: "Yuridia & Christian Nodal", file: "track3.mp3" },
+            { name: "Dilemma", artist: "Nelly Ft. Kelly Rowland", file: "track4.mp3" }
         ];
 
         let currentTrackIndex = 0;
@@ -605,6 +625,13 @@
 
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
+        // PARALLAX NOMBRE
+        window.addEventListener('scroll', () => {
+            const s = window.pageYOffset;
+            const headline = document.querySelector('.hero-headline');
+            if (headline) headline.style.transform = `translateY(${s * 0.22}px)`;
+        });
+
         // --- SISTEMA DE BRILLOS (SOLO DESKTOP) ---
         if (!isMobile) {
             const canvas = document.getElementById('particle-canvas');
@@ -662,5 +689,5 @@
         }
     </script>
 </body>
-
 </html>
+
