@@ -313,12 +313,13 @@
             font-size: clamp(0.95rem, 3vw, 1.15rem);
         }
 
+        /* --- GALERÍA EDITORIAL AJUSTADA --- */
         .gallery-editorial {
             display: grid;
             grid-template-columns: repeat(12, 1fr);
             gap: clamp(15px, 3vw, 35px);
             margin-bottom: 40px;
-            align-items: start;
+            align-items: stretch;
         }
 
         .gallery-item {
@@ -328,24 +329,28 @@
             transition: var(--transition);
             box-shadow: 0 10px 30px rgba(142, 93, 93, 0.1);
             background: white; 
+            /* Altura fija responsiva para evitar desproporciones */
+            height: clamp(300px, 50vh, 600px);
         }
 
         .item-small { grid-column: span 6; }
         .item-large { grid-column: span 12; }
 
         @media (min-width: 768px) {
-            .item-small { grid-column: span 4; }
-            .item-large { grid-column: span 8; }
+            .item-small { grid-column: span 4; height: 450px; }
+            .item-large { grid-column: span 8; height: 550px; }
         }
 
         .gallery-item img { 
             width: 100%; 
-            height: auto;
+            height: 100%;
             display: block;
-            object-fit: contain;
+            /* Object-fit Cover es ideal: llena el espacio sin estirar píxeles */
+            object-fit: cover; 
             transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s ease; 
         }
 
+        /* EFECTO HOVER REFINADO */
         .gallery-item:hover {
             transform: translateY(-8px);
             box-shadow: 0 25px 50px rgba(142, 93, 93, 0.2);
@@ -353,8 +358,8 @@
         }
 
         .gallery-item:hover img {
-            transform: scale(1.06);
-            filter: brightness(1.08) contrast(1.02);
+            transform: scale(1.08);
+            filter: brightness(1.05);
         }
 
         /* --- FOOTER --- */
@@ -395,6 +400,7 @@
             .hero-id-wrap div { width: 30px !important; }
             .player-island { bottom: 15px; }
             footer { padding-bottom: 160px; }
+            .gallery-item { height: 350px; } /* Altura fija para móvil */
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@300;400;500;600&swap" rel="stylesheet">
@@ -529,7 +535,6 @@
 
     <script>
         // CONFIGURACIÓN PLAYLIST
-        // He actualizado el orden de los tracks y artistas según tu nueva petición.
         const playlist = [
             { name: "Nos Quedó El Recuerdo", artist: "Yuridia & Christian Nodal", file: "track1.mp3" },
             { name: "Flowers", artist: "Miley Cyrus", file: "track2.mp3" },
@@ -625,13 +630,6 @@
 
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-        // PARALLAX NOMBRE
-        window.addEventListener('scroll', () => {
-            const s = window.pageYOffset;
-            const headline = document.querySelector('.hero-headline');
-            if (headline) headline.style.transform = `translateY(${s * 0.22}px)`;
-        });
-
         // --- SISTEMA DE BRILLOS (SOLO DESKTOP) ---
         if (!isMobile) {
             const canvas = document.getElementById('particle-canvas');
@@ -690,5 +688,6 @@
     </script>
 </body>
 </html>
+
 
 
