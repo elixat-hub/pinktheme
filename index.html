@@ -167,6 +167,11 @@
             display: inline-block;
         }
 
+        .hero-headline:hover {
+            transform: scale(1.03);
+            text-shadow: 0 0 40px rgba(229, 124, 161, 0.4);
+        }
+
         .hero-id-wrap {
             display: flex; gap: 15px; justify-content: center; align-items: center;
             opacity: 0;
@@ -446,7 +451,7 @@
     <div class="player-island" id="playerWrap">
         <div class="player-main">
             <div class="art-wrap">
-                <img src="cover.jpg" alt="Portada" id="coverImg">
+                <img src="cover1.jpg" alt="Portada" id="coverImg">
             </div>
             <div class="info-controls">
                 <div class="track-meta">
@@ -535,11 +540,12 @@
 
     <script>
         // CONFIGURACIÓN PLAYLIST
+        // He añadido la propiedad 'cover' para que cada canción cargue su imagen correspondiente.
         const playlist = [
-            { name: "Nos Quedó El Recuerdo", artist: "Yuridia & Christian Nodal", file: "track1.mp3" },
-            { name: "Flowers", artist: "Miley Cyrus", file: "track2.mp3" },
-            { name: "Shallow", artist: "Lady Gaga Ft. Bradley Cooper", file: "track3.mp3" },
-            { name: "Dilemma", artist: "Nelly Ft. Kelly Rowland", file: "track4.mp3" }
+            { name: "Nos Quedó El Recuerdo", artist: "Yuridia & Christian Nodal", file: "track1.mp3", cover: "cover1.jpg" },
+            { name: "Flowers", artist: "Miley Cyrus", file: "track2.mp3", cover: "cover2.jpg" },
+            { name: "Shallow", artist: "Lady Gaga Ft. Bradley Cooper", file: "track3.mp3", cover: "cover3.jpg" },
+            { name: "Dilemma", artist: "Nelly Ft. Kelly Rowland", file: "track4.mp3", cover: "cover4.jpg" }
         ];
 
         let currentTrackIndex = 0;
@@ -565,6 +571,7 @@
         const currTimeLabel = document.getElementById('currTime');
         const trackNameLabel = document.getElementById('trackName');
         const trackArtistLabel = document.getElementById('trackArtist');
+        const coverImg = document.getElementById('coverImg'); // Referencia al elemento de imagen
         const playerWrap = document.getElementById('playerWrap');
 
         audio.volume = volRange.value;
@@ -574,6 +581,7 @@
             audio.src = track.file;
             trackNameLabel.innerText = track.name;
             trackArtistLabel.innerText = track.artist;
+            coverImg.src = track.cover; // Cambia la portada al cargar el track
             progFill.style.width = '0%';
         }
 
@@ -688,6 +696,7 @@
     </script>
 </body>
 </html>
+
 
 
 
