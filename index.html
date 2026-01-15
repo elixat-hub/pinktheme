@@ -89,12 +89,24 @@
 
         .logo-placeholder { min-width: 20px; }
 
-        nav { display: flex; gap: clamp(15px, 4vw, 40px); align-items: center; }
+        /* ================================================================
+           INSTRUCCIONES: MODIFICAR BLOQUE DE NAVEGACIÓN Y TAMAÑO
+           1. 'margin-top': Controla qué tan abajo queda el bloque.
+           2. 'gap': Controla el espacio entre los botones.
+           3. 'font-size' (abajo en nav a): Controla el tamaño de la letra.
+           ================================================================
+        */
+        nav { 
+            display: flex; 
+            gap: clamp(15px, 4vw, 40px); /* Espacio entre elementos */
+            align-items: center; 
+            margin-top: 65px; /* Altura del bloque de navegación */
+        }
 
         nav a {
             text-decoration: none;
             color: var(--text-dark);
-            font-size: clamp(0.6rem, 2vw, 0.7rem);
+            font-size: clamp(0.6rem, 2vw, 0.7rem); /* Tamaño de la letra */
             transition: 0.3s;
             font-weight: 500;
             white-space: nowrap;
@@ -165,11 +177,6 @@
             animation: elegantFadeUp 2s forwards 0.5s;
             transition: var(--transition);
             display: inline-block;
-        }
-
-        .hero-headline:hover {
-            transform: scale(1.03);
-            text-shadow: 0 0 40px rgba(229, 124, 161, 0.4);
         }
 
         .hero-id-wrap {
@@ -318,7 +325,7 @@
             font-size: clamp(0.95rem, 3vw, 1.15rem);
         }
 
-        /* --- GALERÍA EDITORIAL AJUSTADA --- */
+        /* --- GALERÍA EDITORIAL --- */
         .gallery-editorial {
             display: grid;
             grid-template-columns: repeat(12, 1fr);
@@ -334,7 +341,6 @@
             transition: var(--transition);
             box-shadow: 0 10px 30px rgba(142, 93, 93, 0.1);
             background: white; 
-            /* Altura fija responsiva para evitar desproporciones */
             height: clamp(300px, 50vh, 600px);
         }
 
@@ -350,12 +356,10 @@
             width: 100%; 
             height: 100%;
             display: block;
-            /* Object-fit Cover es ideal: llena el espacio sin estirar píxeles */
             object-fit: cover; 
             transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s ease; 
         }
 
-        /* EFECTO HOVER REFINADO */
         .gallery-item:hover {
             transform: translateY(-8px);
             box-shadow: 0 25px 50px rgba(142, 93, 93, 0.2);
@@ -405,7 +409,7 @@
             .hero-id-wrap div { width: 30px !important; }
             .player-island { bottom: 15px; }
             footer { padding-bottom: 160px; }
-            .gallery-item { height: 350px; } /* Altura fija para móvil */
+            .gallery-item { height: 350px; } 
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@300;400;500;600&swap" rel="stylesheet">
@@ -419,7 +423,8 @@
         <nav class="sans">
             <a href="#about">Acerca de mí</a>
             <a href="#gallery">Galería</a>
-            <a href="https://xat.com/Eliza" target="_blank" class="cta-header">Encuéntrame</a>
+            <!-- URL ACTUALIZADA PARA EL BOTÓN ENCUÉNTRAME -->
+            <a href="https://xat.com/vip" target="_blank" class="cta-header">Encuéntrame</a>
         </nav>
     </header>
 
@@ -481,7 +486,8 @@
             <span class="sans" id="currTime" style="font-size: 0.5rem; opacity: 0.7;">0:00</span>
             <span class="sans" id="totalTime" style="font-size: 0.5rem; opacity: 0.7;">Música</span>
         </div>
-        <audio id="audioElement" loop>
+        <!-- ATRIBUTO AUTOPLAY: EL REPRODUCTOR INICIARÁ AL ABRIR LA PÁGINA -->
+        <audio id="audioElement" loop autoplay>
             <source src="track1.mp3" type="audio/mpeg">
         </audio>
     </div>
@@ -540,7 +546,6 @@
 
     <script>
         // CONFIGURACIÓN PLAYLIST
-        // He añadido la propiedad 'cover' para que cada canción cargue su imagen correspondiente.
         const playlist = [
             { name: "Nos Quedó El Recuerdo", artist: "Yuridia & Christian Nodal", file: "track1.mp3", cover: "cover1.jpg" },
             { name: "Flowers", artist: "Miley Cyrus", file: "track2.mp3", cover: "cover2.jpg" },
@@ -571,7 +576,7 @@
         const currTimeLabel = document.getElementById('currTime');
         const trackNameLabel = document.getElementById('trackName');
         const trackArtistLabel = document.getElementById('trackArtist');
-        const coverImg = document.getElementById('coverImg'); // Referencia al elemento de imagen
+        const coverImg = document.getElementById('coverImg');
         const playerWrap = document.getElementById('playerWrap');
 
         audio.volume = volRange.value;
@@ -581,9 +586,27 @@
             audio.src = track.file;
             trackNameLabel.innerText = track.name;
             trackArtistLabel.innerText = track.artist;
-            coverImg.src = track.cover; // Cambia la portada al cargar el track
+            coverImg.src = track.cover;
             progFill.style.width = '0%';
         }
+
+        // AUTOPLAY: INTENTA REPRODUCIR AL CARGAR LA PÁGINA
+        window.addEventListener('load', () => {
+            const attemptPlay = () => {
+                audio.play().then(() => {
+                    playIco.style.display = 'none';
+                    pauseIco.style.display = 'block';
+                    playerWrap.classList.add('playing');
+                }).catch(error => {
+                    // Si el navegador bloquea el autoplay, se reproducirá al primer clic en cualquier parte de la web
+                    console.log("Autoplay bloqueado. Esperando interacción.");
+                    window.addEventListener('click', () => {
+                        if (audio.paused) attemptPlay();
+                    }, { once: true });
+                });
+            };
+            attemptPlay();
+        });
 
         playBtn.addEventListener('click', () => {
             if(audio.paused) {
